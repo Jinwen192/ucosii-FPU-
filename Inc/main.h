@@ -61,6 +61,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define LED2_Pin GPIO_PIN_2
 #define LED2_GPIO_Port GPIOE
+#define KEY1_Pin GPIO_PIN_3
+#define KEY1_GPIO_Port GPIOE
+#define KEY2_Pin GPIO_PIN_4
+#define KEY2_GPIO_Port GPIOE
 #define roll1_Pin GPIO_PIN_8
 #define roll1_GPIO_Port GPIOB
 #define roll2_Pin GPIO_PIN_0

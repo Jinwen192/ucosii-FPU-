@@ -14,7 +14,7 @@ struct Roller
 	uint8_t newstat;
 	uint8_t oldstat;
 	int32_t cnt;
-
+	float   distance;
 };
 
 void get_roller_stat (struct Roller* roller);

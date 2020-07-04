@@ -64,10 +64,10 @@ void run_roller	(struct Roller* roller)
 
 void show_roller (struct Roller* roller) 
 {     
-	 float distance = 0;
+	//float distance = 0;
 	uint8_t str[20];
-	distance = 0.287 * roller->cnt;
-	sprintf ((char*)str, "%0.2fcm", distance);
+	roller->distance = 0.287 * roller->cnt;
+	sprintf ((char*)str, "%0.2fcm   ", roller->distance);
 	OLED_ShowStr (0,0, str, 2);
 }
 
