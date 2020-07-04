@@ -1,0 +1,11 @@
+ucosii\ucos_ii.o: ..\Src\UCOSII\CORE\ucos_ii.c
+ucosii\ucos_ii.o: ..\Src\UCOSII\CORE\ucos_ii.h
+ucosii\ucos_ii.o: ..\Src\UCOSII\CONFIG\includes.h
+ucosii\ucos_ii.o: f:\Keil_v529\ARM\ARMCC\Bin\..\include\stdio.h
+ucosii\ucos_ii.o: f:\Keil_v529\ARM\ARMCC\Bin\..\include\string.h
+ucosii\ucos_ii.o: f:\Keil_v529\ARM\ARMCC\Bin\..\include\ctype.h
+ucosii\ucos_ii.o: f:\Keil_v529\ARM\ARMCC\Bin\..\include\stdlib.h
+ucosii\ucos_ii.o: f:\Keil_v529\ARM\ARMCC\Bin\..\include\stdarg.h
+ucosii\ucos_ii.o: ..\Src\UCOSII\CORE\ucos_ii.h
+ucosii\ucos_ii.o: ..\Src\UCOSII\PORT\os_cpu.h
+ucosii\ucos_ii.o: ..\Src\UCOSII\CONFIG\os_cfg.h
