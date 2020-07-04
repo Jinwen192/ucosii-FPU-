@@ -7,6 +7,7 @@
 #include "string.h"
 #include "roller.h"
 #include "adc.h"
+#include "usart.h"
 
 //任务优先级从5~30，分散分配
 
@@ -63,11 +64,20 @@ void AD_task(void  *pdata);
 OS_STK KEY_TASK_STK[KEY_STK_SIZE] ;
 void key_task(void  *pdata);
 
+//发送串口任务
+#define UART_TASK_PRIO			7
+#define UART_STK_SIZE			128
+OS_STK UART_TASK_STK[UART_STK_SIZE] ;
+void uart_task(void  *pdata);
+
 void *MsgGrp[128];
 OS_EVENT *ad_box;
 OS_EVENT *roller_box;
+OS_EVENT *roller_uart_box;
 OS_EVENT *key_sd_sem;
 OS_EVENT *SD_signal_sem;
+OS_EVENT *uart_sem;
+
 void ucos_main (void)
 {
 	OSInit();
@@ -116,11 +126,16 @@ void start_task(void *pdata)
 				  (OS_STK*)&AD_TASK_STK[AD_STK_SIZE-1],
 				  AD_TASK_PRIO);	
 				 
+	OSTaskCreate(uart_task,
+           	     (void*)0,
+				  (OS_STK*)&UART_TASK_STK[UART_STK_SIZE-1],
+				  UART_TASK_PRIO);	
+				 
 	OSTaskCreate(key_task,
 			 (void*)0,
 			  (OS_STK*)&KEY_TASK_STK[KEY_STK_SIZE-1],
 			  KEY_TASK_PRIO);
-				 
+		 
 	OSTaskDel(START_TASK_PRIO);
 	OS_EXIT_CRITICAL();
 				 
@@ -257,8 +272,8 @@ void roller_task(void  *pdata)
 {
 
 	roller_box = OSMboxCreate ((void*)0);
-
-	 struct Roller roller;
+	roller_uart_box = OSMboxCreate ((void*)0);
+	struct Roller roller;
 	
 	roller_init (&roller);
 	
@@ -269,7 +284,7 @@ void roller_task(void  *pdata)
 		get_roller_stat (&roller);
 		run_roller (&roller);
 		OSMboxPost (roller_box,(void*)&roller);
-
+		OSMboxPost (roller_uart_box,(void*)&roller);
 		OSTimeDlyHMSM(0,0,0,1);
 	}
 }
@@ -288,27 +303,61 @@ void AD_task (void *pdata)
 		HAL_ADC_Start_DMA (&hadc1, (uint32_t*)&AD_value, 1);
 		OSMboxPost (ad_box, (void*)&AD_value);
 		
-		OSTimeDlyHMSM(0,0,0,100);
+		OSTimeDlyHMSM(0,0,0,200);
 	}
 }
+
+
+void uart_task (void *pdata)
+{
+	uint8_t err;
+	void *msg;
+	struct Roller *roller;
+	char str[20];
+	
+	OSTimeDlyHMSM(0,0,0,100);
+	while (1)
+	{
+		OSSemPend (uart_sem, 0, &err);
+		msg = OSMboxPend (roller_uart_box, 0, &err);
+		if (msg != (void*)0)
+			roller = (struct Roller*)msg;
+		
+		sprintf (str,"%.2fcm\n", roller->distance);
+		HAL_UART_Transmit_IT(&huart1, (uint8_t *)str, strlen(str));
+		HAL_GPIO_TogglePin (LED2_GPIO_Port,LED2_Pin);
+		OSTimeDlyHMSM(0,0,0,100);
+	}
+	
+}
+
 
 void key_task (void *pdata)
 {
-	int key_new = 1;
-	key_sd_sem = OSSemCreate (0);
+	key_sd_sem 	= OSSemCreate (0);
+	uart_sem 	= OSSemCreate (0);
+	
 	while (1)
 	{	
-		key_new = HAL_GPIO_ReadPin (KEY1_GPIO_Port, KEY1_Pin);
-		if (key_new == 0)
+		if (HAL_GPIO_ReadPin (KEY1_GPIO_Port, KEY1_Pin) == 0)
 		{
 			OSTimeDlyHMSM(0,0,0,100);
-			key_new = HAL_GPIO_ReadPin (KEY1_GPIO_Port, KEY1_Pin);
-			if (key_new == 0)
+			if (HAL_GPIO_ReadPin (KEY1_GPIO_Port, KEY1_Pin) == 0)
 			{
 				OSSemPost (key_sd_sem);
-				HAL_GPIO_TogglePin (LED1_GPIO_Port,LED1_Pin);
 			}
 		}
+		
+		if (HAL_GPIO_ReadPin (KEY2_GPIO_Port, KEY2_Pin) == 0)
+		{
+			OSTimeDlyHMSM(0,0,0,100);
+			if (HAL_GPIO_ReadPin (KEY2_GPIO_Port, KEY2_Pin) == 0)
+			{
+				
+				OSSemPost (uart_sem);
+			}
+		}
+		
 		OSTimeDlyHMSM(0,0,0,100);
 	}
 }
@@ -317,3 +366,12 @@ void key_task (void *pdata)
 
 
 
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if (huart->Instance == USART1)
+		OSTaskCreate(led2_task,
+					(void*)0,
+					(OS_STK*)&LED2_TASK_STK[LED2_STK_SIZE-1],
+					 LED2_TASK_PRIO);
+}
+	

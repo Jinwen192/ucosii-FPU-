@@ -34,6 +34,7 @@ ucosii\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 ucosii\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 ucosii\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h
 ucosii\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h
+ucosii\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 ucosii\main.o: ../Inc/adc.h
 ucosii\main.o: ../Inc/dma.h
 ucosii\main.o: ../Inc/fatfs.h
@@ -47,6 +48,7 @@ ucosii\main.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
 ucosii\main.o: ../Inc/sd_diskio.h
 ucosii\main.o: ../Inc/i2c.h
 ucosii\main.o: ../Inc/sdio.h
+ucosii\main.o: ../Inc/usart.h
 ucosii\main.o: ../Inc/gpio.h
 ucosii\main.o: ../Inc/ucos_main.h
 ucosii\main.o: ..\Src\0.91oled_driver\oled.h

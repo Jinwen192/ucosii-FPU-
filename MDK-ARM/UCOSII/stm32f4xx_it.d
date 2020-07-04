@@ -34,6 +34,7 @@ ucosii\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 ucosii\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 ucosii\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h
 ucosii\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h
+ucosii\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 ucosii\stm32f4xx_it.o: ../Inc/stm32f4xx_it.h
 ucosii\stm32f4xx_it.o: ..\Src\UCOSII\CONFIG\includes.h
 ucosii\stm32f4xx_it.o: f:\Keil_v529\ARM\ARMCC\Bin\..\include\stdio.h

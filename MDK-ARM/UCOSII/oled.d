@@ -36,6 +36,7 @@ ucosii\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 ucosii\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 ucosii\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h
 ucosii\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h
+ucosii\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 ucosii\oled.o: ..\Src\0.91oled_driver\ascii.h
 ucosii\oled.o: ..\Src\UCOSII\CONFIG\includes.h
 ucosii\oled.o: f:\Keil_v529\ARM\ARMCC\Bin\..\include\stdio.h
